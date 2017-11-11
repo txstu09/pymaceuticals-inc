@@ -1,4 +1,8 @@
-
+# Pymaceuticals Inc.
+### Analysis
+* Of the four treatments examined, only Capomulin showed a decrease in overall tumor size throughout the study period.
+* Despite decreasing tumor size, Capomulin did not stop the spread of metastaic sites. However it did have the lowest rate of metastic spread of the four treatments.
+* Ketapril appears to have no better outcome than the placebo.
 
 ```python
 # Import dependencies
@@ -14,10 +18,9 @@ clinical_data = pd.read_csv('Data/clinicaltrial_data.csv')
 mouse_data = pd.read_csv('Data/mouse_drug_data.csv')
 ```
 
-
+* NOTE: Mouse ID "g989" was duplicated in both datasets and has been removed form the analysis.
 ```python
 # Clean mouse_data
-# Mouse ID 'g989' is duplicated in mouse_data dataframe. Actual drug administered is unknown.
 mouse_data.set_index('Mouse ID', inplace=True)
 mouse_data.drop('g989', inplace=True)
 mouse_data.reset_index(inplace=True)
@@ -29,10 +32,8 @@ mouse_data.reset_index(inplace=True)
 trial_data = pd.merge(clinical_data, mouse_data, on='Mouse ID')
 ```
 
-
+## Tumor Response to Treatment
 ```python
-# Tumor Response
-
 tumor_response = trial_data.groupby(['Timepoint','Drug'])['Tumor Volume (mm3)'].mean().unstack()
 tumor_table = tumor_response[['Capomulin','Infubinol','Ketapril','Placebo']]
 
@@ -63,10 +64,8 @@ plt.show()
 ![png](output_4_0.png)
 
 
-
+## Metastatic Response to Treatment
 ```python
-# Metastatic Sites
-
 m_sites = trial_data.groupby(['Timepoint','Drug'])['Metastatic Sites'].mean().unstack()
 m_sites_table = m_sites[['Capomulin','Infubinol','Ketapril','Placebo']]
 
@@ -97,10 +96,8 @@ plt.show()
 ![png](output_5_0.png)
 
 
-
+## Survival Rates
 ```python
-# Survival Rate
-
 mice_alive = trial_data.groupby(['Timepoint','Drug'])['Mouse ID'].count().unstack()
 mice_alive_table = ((mice_alive[['Capomulin','Infubinol','Ketapril','Placebo']]/25)*100).astype(int)
 
@@ -131,7 +128,7 @@ plt.show()
 ![png](output_6_0.png)
 
 
-
+## Summary Bar Graph
 ```python
 drugs = ['Capomulin','Infubinol','Ketapril','Placebo']
 final_size = []
