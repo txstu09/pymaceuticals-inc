@@ -18,7 +18,7 @@ clinical_data = pd.read_csv('Data/clinicaltrial_data.csv')
 mouse_data = pd.read_csv('Data/mouse_drug_data.csv')
 ```
 
-* NOTE: Mouse ID "g989" was duplicated in both datasets and has been removed form the analysis.
+* NOTE: Mouse ID "g989" was duplicated in both datasets and has been removed from the analysis.
 ```python
 # Clean mouse_data
 mouse_data.set_index('Mouse ID', inplace=True)
